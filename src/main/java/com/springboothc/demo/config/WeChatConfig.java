@@ -23,7 +23,7 @@ public class WeChatConfig {
 
     /**
      * 开放平台：appid, appsecret, redirecturl
-     * */
+     */
     @Value("${wxopen.appid}")
     private String openAppid;
 
@@ -36,7 +36,7 @@ public class WeChatConfig {
     /**
      * 微信开放平台获取code的链接
      */
-    private final static String OPEN_QRCODE_URL=
+    private final static String OPEN_QRCODE_URL =
             "https://open.weixin.qq.com/connect/qrconnect?appid=%s" +
                     "&redirect_uri=%s" +
                     "&response_type=code" +
@@ -53,7 +53,7 @@ public class WeChatConfig {
         *
         * */
     private final static String OPEN_ACCESS_TOKEN_URL =
-                    "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s" +
+            "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s" +
                     "&secret=%s" +
                     "&code=%s" +
                     "&grant_type=authorization_code";
@@ -62,7 +62,7 @@ public class WeChatConfig {
     *   微信开发平台，获取个人信息
     * */
 
-    private static final String OPEN_USER_INFO_URL="https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN";
+    private static final String OPEN_USER_INFO_URL = "https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN";
 
     public static String getOpenUserInfoUrl() {
         return OPEN_USER_INFO_URL;
