@@ -35,6 +35,7 @@ public class WeChatConfig {
 
     /**
      * 微信开放平台获取code的链接
+     * 使用%s可替换自己想要的惨书
      */
     private final static String OPEN_QRCODE_URL =
             "https://open.weixin.qq.com/connect/qrconnect?appid=%s" +

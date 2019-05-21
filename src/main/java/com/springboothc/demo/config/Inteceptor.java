@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author: zhijie
  * @create: 2019-04-10 14:11
  **/
+//这是一个配置类
 @Configuration
 public class Inteceptor implements WebMvcConfigurer {
 

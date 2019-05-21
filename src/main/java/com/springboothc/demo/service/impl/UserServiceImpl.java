@@ -40,17 +40,21 @@ public class UserServiceImpl implements UserService {
                                                 weChatConfig.getOpenAppid(),
                                                 weChatConfig.getOpenAppSecret(),
                                                  code);
-        Map<String, Object> baseMap = HttpUtils.doGet(accessTokenUrl);
+        Map<String, Object> baseMap = HttpUtils.doGet(accessTokenUrl);  //发送get请求
+
         if(baseMap == null || baseMap.isEmpty()) {
             return null;
         }
 
+//        //第四步：拉取用户信息
         String userInfoUrl = String.format(weChatConfig.getOpenUserInfoUrl(),
                                             baseMap.get("access_token"), baseMap.get("openid"));
         Map<String, Object> infoMap = HttpUtils.doGet(userInfoUrl);
+
         if(baseMap == null || baseMap.isEmpty()) {
             return null;
         }
+
         String openid = (String) infoMap.get("openid");
         User dbUser = userMapper.findByOpenId(openid);
         if(dbUser != null) {
@@ -73,9 +77,6 @@ public class UserServiceImpl implements UserService {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-
-
         User user = new User();
         user.setName(nickname);
         user.setOpenid(openid);

@@ -1,6 +1,7 @@
 package com.springboothc.demo.controller;
 
 import com.springboothc.demo.pojo.JsonData;
+import com.springboothc.demo.utils.JwtUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
 
     @GetMapping(value = "add")
-    public JsonData saveOrder() {
-        return JsonData.buildSuccess(2, "下单成功");
+    public JsonData saveOrder(@RequestParam("token")String token) {
+
+        return JsonData.buildSuccess(JwtUtils.checkJWT(token).toString(), "下单成功");
     }
 }

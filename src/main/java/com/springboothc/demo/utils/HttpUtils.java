@@ -12,94 +12,107 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @program: springboothighercourse
- * @description: 封装Http方法
- * @author: zhijie
- * @create: 2019-04-08 23:11
- **/
+ * 封装http get post
+ */
 public class HttpUtils {
 
 
-    private static final Gson g = new Gson();
-  /*
-    * @Description:  doGET方法
-    * @Param: [url]
-    * @return: java.util.Map<java.lang.String,java.lang.Object>
-    * @Author:  zhijie
-    * @Date: 2019/4/8
-    */
-    public static Map<String, Object> doGet(String url) {
-      CloseableHttpClient httpClient = HttpClients.createDefault();
-        Map<String, Object> map = new HashMap<>();
+    private static  final Gson gson = new Gson();
 
-        RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(5000)  //连接超时
-                        .setSocketTimeout(5000)
-                        .setConnectionRequestTimeout(5000)  //请求超时
-                        .setRedirectsEnabled(true)  //允许重定向
-                        .build();
-        HttpGet get = new HttpGet(url);
-        get.setConfig(requestConfig);
+    /**
+     * get方法
+     * @param url
+     * @return
+     */
+    public static Map<String,Object> doGet(String url){
+
+        Map<String,Object> map = new HashMap<>();
+        CloseableHttpClient httpClient =  HttpClients.createDefault();
+
+        RequestConfig requestConfig =  RequestConfig.custom().setConnectTimeout(5000) //连接超时
+                .setConnectionRequestTimeout(5000)//请求超时
+                .setSocketTimeout(5000)
+                .setRedirectsEnabled(true)  //允许自动重定向
+                .build();
+
+        HttpGet httpGet = new HttpGet(url);
+        httpGet.setConfig(requestConfig);
 
         try{
-            HttpResponse response = httpClient.execute(get);
-            if(response.getStatusLine().getStatusCode() == 200) {
-               String responseStr =  EntityUtils.toString(response.getEntity());
-                map = g.fromJson(responseStr, map.getClass());
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            if(httpResponse.getStatusLine().getStatusCode() == 200){
+
+                String jsonResult = EntityUtils.toString( httpResponse.getEntity());
+                map = gson.fromJson(jsonResult,map.getClass());
             }
-        }catch (Exception e) {
+
+        }catch (Exception e){
             e.printStackTrace();
-        } finally {
+        }finally {
             try {
                 httpClient.close();
-            } catch (IOException e) {
+            }catch (Exception e){
                 e.printStackTrace();
             }
         }
         return map;
     }
 
-    /*
- * @Description:
- * @Param: [url, data, timeout]
- * @return: java.lang.String
- * @Author:  zhijie
- * @Date: 2019/4/9
- */
-    public static String doPost(String url, String data, int timeout) {
-    CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(url);
-        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(timeout)
-                            .setConnectionRequestTimeout(timeout)
-                            .setSocketTimeout(timeout)
-                            .setRedirectsEnabled(true)
-                            .build();
+
+    /**
+     * 封装post
+     * @return
+     */
+    public static String doPost(String url, String data,int timeout){
+        CloseableHttpClient httpClient =  HttpClients.createDefault();
+        //超时设置
+
+        RequestConfig requestConfig =  RequestConfig.custom().setConnectTimeout(timeout) //连接超时
+                .setConnectionRequestTimeout(timeout)//请求超时
+                .setSocketTimeout(timeout)
+                .setRedirectsEnabled(true)  //允许自动重定向
+                .build();
+
+
+        HttpPost httpPost  = new HttpPost(url);
         httpPost.setConfig(requestConfig);
-        httpPost.setHeader("Content-Type", "text/html; chartset=UTF-8");
-        if(data != null && data instanceof String) {    //字符串传参
-            StringEntity entity = new StringEntity(data, "UTF-8");
-            httpPost.setEntity(entity);
+        httpPost.addHeader("Content-Type","text/html; chartset=UTF-8");
+
+        if(data != null && data instanceof  String){ //使用字符串传参
+            StringEntity stringEntity = new StringEntity(data,"UTF-8");
+            httpPost.setEntity(stringEntity);
         }
-        try {
-            CloseableHttpResponse response = httpClient.execute(httpPost);
-            HttpEntity entity = response.getEntity();
-            if(response.getStatusLine().getStatusCode() == 200) {
-                String responseStr = EntityUtils.toString(entity);
-                return responseStr;
+
+        try{
+
+            CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            if(httpResponse.getStatusLine().getStatusCode() == 200){
+                String result = EntityUtils.toString(httpEntity);
+                return result;
             }
-        } catch (IOException e) {
+
+        }catch (Exception e){
             e.printStackTrace();
-        } finally {
-            try {
+        }finally {
+            try{
                 httpClient.close();
-            } catch (IOException e) {
+            }catch (Exception e){
                 e.printStackTrace();
             }
         }
-        return  null;
+
+        return null;
+
     }
+
+
+
+
+
+
 }
