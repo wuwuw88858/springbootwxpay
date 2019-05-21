@@ -26,6 +26,7 @@ public class MybatisPageHelperConfig {
         properties.setProperty("rowBoundsWithCount", "true");
         properties.setProperty("reasonable", "true");
         pageHelper.setProperties(properties);
+
         return pageHelper;
     }
 }
