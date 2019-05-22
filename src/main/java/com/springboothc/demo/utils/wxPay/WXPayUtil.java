@@ -149,12 +149,13 @@ public class WXPayUtil {
             Map.Entry<String, String> mapEntry = iterator.next();
             String k = mapEntry.getKey();
             String v = mapEntry.getValue();
-            if (v.equals("") && v != null) {
+            if ( v != null) {
                 stringBuilder.append(k + "=" + v + "&");
             }
         }
         stringBuilder.append("key=").append(key);
         try {
+            System.out.println(stringBuilder.toString());
           String sign = MD5(stringBuilder.toString());
           return sign;
         } catch (Exception e) {
@@ -188,6 +189,7 @@ public class WXPayUtil {
         Map<String, String> data = xmlToMap(xmlStr);
         if (!data.containsKey(WXPayConstants.FIELD_SIGN)) {
             return false;
+
         }
         String sign = data.get(WXPayConstants.FIELD_SIGN);
         return generateSignature(data, key).equals(sign);

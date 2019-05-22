@@ -34,6 +34,17 @@ public class WeChatConfig {
     private String openRedirectUrl;
 
     /**
+     * 微信支付信息mch_id payKey callBack
+     * */
+    @Value("${wxpay.mch_id}")
+    private String payMchId;
+    @Value("${wxpay.key}")
+    private String payKey;
+    @Value("${wxpay.callback}")
+    private String payCallBackUrl;
+
+
+    /**
      * 微信开放平台获取code的链接
      * 使用%s可替换自己想要的惨书
      */
@@ -111,5 +122,29 @@ public class WeChatConfig {
 
     public void setAppsecret(String appsecret) {
         this.appsecret = appsecret;
+    }
+
+    public String getPayMchId() {
+        return payMchId;
+    }
+
+    public void setPayMchId(String payMchId) {
+        this.payMchId = payMchId;
+    }
+
+    public String getPayKey() {
+        return payKey;
+    }
+
+    public void setPayKey(String payKey) {
+        this.payKey = payKey;
+    }
+
+    public String getPayCallBackUrl() {
+        return payCallBackUrl;
+    }
+
+    public void setPayCallBackUrl(String payCallBackUrl) {
+        this.payCallBackUrl = payCallBackUrl;
     }
 }

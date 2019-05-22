@@ -25,7 +25,7 @@ public interface UserMapper {
     int saveUser(User user);
 
     @Select("select * from user where id = #{id}")
-    User findById(@Param("id") String userId);
+    User findById(@Param("id") int userId);
     @Select("select * from user where openid = #{openid}")
     User findByOpenId(@Param("openid") String openid);
 

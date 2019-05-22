@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class OrderMapperTest {
 
     @Autowired
-    private OrderMapper orderMapper;
+    private VideoOrderMapper videoOrderMapper;
     @Test
     public void insertOrder() throws Exception {
         VideoOrder videoOrder = new VideoOrder();
@@ -24,7 +24,7 @@ public class OrderMapperTest {
         videoOrder.setCreateTime(new Date());
         videoOrder.setHeadImg("xxx");
         videoOrder.setVideoTitle("springBoot高级支付教程");
-        orderMapper.insertOrder(videoOrder);
+        videoOrderMapper.insertOrder(videoOrder);
         assertNotNull(videoOrder.getId());
         System.out.println(videoOrder.getId());
     }
@@ -32,7 +32,7 @@ public class OrderMapperTest {
     @Test
     public void findById() throws Exception {
 
-        VideoOrder videoOrder = orderMapper.findById(1);
+        VideoOrder videoOrder = videoOrderMapper.findById(1);
         System.out.println(videoOrder.getVideoTitle());
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
  * @create: 2019-05-21 15:29
  **/
 @Repository
-public interface OrderMapper {
+public interface VideoOrderMapper {
 
     /*
     * @Description:  保存订单
