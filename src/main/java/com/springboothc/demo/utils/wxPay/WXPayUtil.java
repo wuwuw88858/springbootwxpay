@@ -10,9 +10,8 @@ import org.w3c.dom.NodeList;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.ByteArrayInputStream;
@@ -71,8 +70,13 @@ public class WXPayUtil {
      * @return XML格式的字符串
      * @throws Exception
      */
-    public static String mapToXml(Map<String, String> data) throws Exception {
-        org.w3c.dom.Document document = WXPayXmlUtil.newDocument();
+    public static String mapToXml(Map<String, String> data)  {
+        org.w3c.dom.Document document = null;
+        try {
+            document = WXPayXmlUtil.newDocument();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
         org.w3c.dom.Element root = document.createElement("xml");
         document.appendChild(root);
         for (String key : data.keySet()) {
@@ -86,13 +90,22 @@ public class WXPayUtil {
             root.appendChild(filed);
         }
         TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
+        Transformer transformer = null;
+        try {
+            transformer = tf.newTransformer();
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        }
         DOMSource source = new DOMSource(document);
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         StringWriter writer = new StringWriter();
         StreamResult result = new StreamResult(writer);
-        transformer.transform(source, result);
+        try {
+            transformer.transform(source, result);
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
         String output = writer.getBuffer().toString(); //.replaceAll("\n|\r", "");
         try {
             writer.close();

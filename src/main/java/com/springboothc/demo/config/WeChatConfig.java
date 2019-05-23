@@ -74,7 +74,16 @@ public class WeChatConfig {
     *   微信开发平台，获取个人信息
     * */
 
-    private static final String OPEN_USER_INFO_URL = "https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN";
+    private static final String OPEN_USER_INFO_URL =
+            "https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN";
+
+
+
+    /**
+     * 统一下单接口
+     * */
+    private static final String UNIFLED_ORDER_URL =
+            "http://api.xdclass.net/pay/unifiedorder";
 
     public static String getOpenUserInfoUrl() {
         return OPEN_USER_INFO_URL;
@@ -146,5 +155,9 @@ public class WeChatConfig {
 
     public void setPayCallBackUrl(String payCallBackUrl) {
         this.payCallBackUrl = payCallBackUrl;
+    }
+
+    public static String getUnifledOrderUrl() {
+        return UNIFLED_ORDER_URL;
     }
 }

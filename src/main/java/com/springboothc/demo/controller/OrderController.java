@@ -30,15 +30,17 @@ public class OrderController {
     @GetMapping(value = "add")
     public JsonData saveOrder(@RequestParam(value = "video_id", required = true) int videoId,
                               HttpServletRequest request) {
-        String ip = GetIpUtils.getIppAddr(request); //获取用户IP
+//        String ip = GetIpUtils.getIppAddr(request); //获取用户IP
 //            int userId = request.getAttribute("user_id");
         int userId = 7;
 
         VideoOrderDto videoOrderDto = new VideoOrderDto();
         videoOrderDto.setUserId(userId);
         videoOrderDto.setVideoId(videoId);
-        videoOrderDto.setIp(ip);
-        videoOrderService.save(videoOrderDto);
+        videoOrderDto.setIp("172.16.111.45");
+        //生成二维码
+        String codeUrl = videoOrderService.save(videoOrderDto);
+
         return JsonData.buildSuccess("下单成功");
     }
 }
