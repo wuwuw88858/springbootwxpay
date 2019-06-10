@@ -5,17 +5,19 @@ import com.springboothc.demo.pojo.JsonData;
 import com.springboothc.demo.pojo.User;
 import com.springboothc.demo.service.UserService;
 import com.springboothc.demo.utils.JwtUtils;
+import com.springboothc.demo.utils.wxPay.WXPayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * @program: springboothighercourse
@@ -82,6 +84,39 @@ public class WeChatController {
             try {
                 //当前用户页面地址需要拼上http://
                 response.sendRedirect("http://" + state + "?token=" + token + "&head_img=" + user.getHeadImg() + "&name=" + URLEncoder.encode(user.getName(), "UTF-8"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /*
+        * @Description:  微信支付回调地址 读取微信返回的流数据，包装成字符流的形式，在拼接起来 转换成map
+        * @Param: [request, response]
+        * @return: void
+        * @Author:  zhijie
+        * @Date: 2019-5-24
+        */
+    @PostMapping(value = "/wxpay/callback")
+    public void wxPayCallBack(HttpServletRequest request, HttpServletResponse response) {
+        InputStream inputStream = null;
+            BufferedReader bufferedReader = null;
+            StringBuffer stringBuffer = new StringBuffer();
+        try {
+            inputStream = request.getInputStream(); //定义字节输入流
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));//提供一个读取的字符缓冲流：字节流 --> 字符流 -->字符缓冲流
+            String line;
+            while((line = bufferedReader.readLine()) != null) { //readLine 读取文本中的字符流数据
+                stringBuffer.append(line);
+            }
+            Map<String, String> callbackMap = WXPayUtil.xmlToMap(stringBuffer.toString());
+            System.out.println(callbackMap.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+                bufferedReader.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

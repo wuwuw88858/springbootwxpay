@@ -9,7 +9,7 @@ import org.apache.ibatis.jdbc.SQL;
  * @author: zhijie
  * @create: 2019-04-02 16:11
  **/
-public class VideoProvider {
+public class  VideoProvider {
 
 
     /*
@@ -37,7 +37,7 @@ public class VideoProvider {
                     SET("view_num = #{viewNum}");
                 }
                 if(video.getPrice() != null) {
-                    SET("price = #{price}");
+                    SET("price = #{price}   ");
                 }
                 if(video.getCreateTime() != null) {
                     SET("create_time = #{createTime}");
